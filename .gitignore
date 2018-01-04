@@ -4,8 +4,8 @@
 client/mg/
 client/assets/data.xml
 
-server/mg/
-server/data.xml
+server_python/mg/
+server_python/data.xml
 
 server_php/mg/
 server_php/data.xml
