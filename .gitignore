@@ -9,3 +9,8 @@ server/data.xml
 
 server_php/mg/
 server_php/data.xml
+
+server_cpp/server.cpp.osx.xcodeproj/
+server_cpp/build/
+server_cpp/mg/
+server_cpp/data.xml

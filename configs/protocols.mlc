@@ -1,6 +1,7 @@
 
 class Request<SerializedObject>:visitor
 {
+    function Response* execute():server:abstract;
 }
 
 class RequestOpenTile<Request>
