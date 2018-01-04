@@ -1,0 +1,39 @@
+class DataGameObject<SerializedObject>:storage
+{
+    string name
+    int reward_gold = 0
+    bool interaction = false
+    DataGameObject*:link next
+
+    string image:client = ""
+}
+
+enum TileState
+{
+    closed
+    open
+}
+
+class Tile<SerializedObject>
+{
+    int x
+    int y
+    TileState state
+    DataGameObject*:link object
+}
+
+class DataLevel<SerializedObject>:storage
+{
+    string name
+    int tile_size
+    int width
+    int height
+
+    list<Tile*> tiles
+
+    function int get_tile_index(int pos_x, int pos_y)
+    {
+        int index = pos_y * this->width + pos_x;
+        return index;
+    }
+}

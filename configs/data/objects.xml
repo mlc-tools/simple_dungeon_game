@@ -1,0 +1,6 @@
+<data>
+    <game_object name="empty" next="empty"/>
+    <game_object name="gold" reward_gold="10" interaction="true" image="assets/gold.png" next="empty"/>
+    <game_object name="chest" reward_gold="50" interaction="true" image="assets/chest_full.png" next="chest_empty"/>
+    <game_object name="chest_empty" reward_gold="0" image="assets/chest_open.png" next="empty"/>
+</data>

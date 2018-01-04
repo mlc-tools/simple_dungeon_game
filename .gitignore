@@ -1,1 +1,8 @@
 *.pyc
+.idea
+
+client/mg/
+client/assets/data.xml
+
+server/mg/
+server/data.xml
