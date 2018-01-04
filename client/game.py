@@ -96,7 +96,7 @@ class GameScene(Scene):
 
 if __name__ == '__main__':
     # Uncomment this line to run game with php server
-    # Controller.SERVER_URL = 'http://localhost/?request={}'
+    Controller.SERVER_URL = 'http://localhost/?request={}'
 
     # Uncomment this line to run game with python http server
     # Controller.SERVER_URL = 'http://localhost:8045/?request={}'
