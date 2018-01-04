@@ -17,10 +17,10 @@ class RequestManager:
         url = self.server_url.format(buffer)
         url = url.replace('\n', '%20')
         url = url.replace(' ', '%20')
-
+        
         response_message = urllib2.urlopen(url).read()
-        # response_message = response_message.replace('<?xml version="1.0"?>\n', '').strip()
-
+        response_message = response_message.replace('\n', '')
+        
         response = Factory.create_command(response_message)
         response_handler = ResponseHandler(self.controller)
         response_handler.visit(response)

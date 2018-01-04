@@ -35,10 +35,12 @@ class GameTile(Sprite):
 
 
 class Controller:
+    
+    SERVER_URL = ''
 
     def __init__(self, scene):
         self.scene = scene
-        self.request_manager = RequestManager(self, 'http://localhost:8045/?request={}')
+        self.request_manager = RequestManager(self, Controller.SERVER_URL)
 
     def request_open_tile(self, tile):
         if tile.data.state == TileState.open:
@@ -93,10 +95,16 @@ class GameScene(Scene):
 
 
 if __name__ == '__main__':
-    game = Engine()
+    # Uncomment this line to run game with php server
+    # Controller.SERVER_URL = 'http://localhost/?request={}'
+
+    # Uncomment this line to run game with python http server
+    # Controller.SERVER_URL = 'http://localhost:8045/?request={}'
+
+    engine = Engine()
     DataStorage.shared().initialize(open('assets/data.xml').read())
 
     scene = GameScene()
-
-    game.set_scene(scene)
-    game.loop()
+    engine.set_scene(scene)
+    engine.loop()
+    

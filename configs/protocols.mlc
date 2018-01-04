@@ -6,11 +6,30 @@ class Request<SerializedObject>:visitor
 class RequestOpenTile<Request>
 {
     int index
+
+    function Response* execute():server
+    {
+        auto response = make_intrusive<ResponseTileChangedState>();
+        response->index = this->index;
+        response->state = TileState::open;
+        return response;
+    }
 }
 
 class RequestRewardFromTile<Request>
 {
     int index
+
+    function Response* execute():server
+    {
+        auto data = DataStorage::shared().get<DataLevel>("0");
+        auto tile = data->tiles[this->index];
+        auto response = make_intrusive<ResponseTileReward>();
+        response->index = this->index;
+        response->gold = tile->object->reward_gold;
+        response->new_object = tile->object->next;
+        return response;
+    }
 }
 
 class Response<SerializedObject>:visitor

@@ -6,3 +6,6 @@ client/assets/data.xml
 
 server/mg/
 server/data.xml
+
+server_php/mg/
+server_php/data.xml
