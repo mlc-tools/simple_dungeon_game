@@ -12,10 +12,14 @@
 #include <string>
 #include <memory>
 #include <exception>
-#include <unistd.h>
 
 #ifdef WIN32
 #	define sleep(x) std::this_thread::sleep_for(std::chrono::milliseconds(x))
+#else
+#	include <unistd.h>
+#	ifndef sleep
+#		define sleep(x) usleep(x)
+#	endif
 #endif
 
 std::string getFileContent(const std::string& path);

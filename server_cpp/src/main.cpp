@@ -63,7 +63,7 @@ int main(int argc, char **argv)
     server.run();
 	while(1)
 	{
-		usleep(1);
+		sleep(1);
 	}
 	
     return 0;
