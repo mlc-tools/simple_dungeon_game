@@ -1,7 +1,9 @@
 import urllib2
 import xml.etree.ElementTree as ET
+import json
 from mg.Factory import Factory
 from mg.IVisitorResponse import IVisitorResponse
+from mg.config import *
 
 
 class RequestManager:
@@ -11,16 +13,27 @@ class RequestManager:
         self.server_url = server_url
 
     def request(self, request):
-        root = ET.Element(request.get_type())
-        request.serialize(root)
-        buffer = ET.tostring(root)
-        url = self.server_url.format(buffer)
+        payload = ''
+        if MG_SERIALIZE_FORMAT == MG_XML:
+            root = ET.Element(request.get_type())
+            request.serialize(root)
+            payload = ET.tostring(root)
+        elif MG_SERIALIZE_FORMAT == MG_JSON:
+            dict_ = {}
+            request.serialize(dict_)
+            dict_ = {request.get_type(): dict_}
+            payload = json.dumps(dict_)
+        print payload
+
+        url = self.server_url.format(payload)
         url = url.replace('\n', '%20')
         url = url.replace(' ', '%20')
-        
+
         response_message = urllib2.urlopen(url).read()
         response_message = response_message.replace('\n', '')
-        
+
+        print response_message
+
         response = Factory.create_command(response_message)
         response_handler = ResponseHandler(self.controller)
         response_handler.visit(response)

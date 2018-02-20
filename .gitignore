@@ -3,15 +3,19 @@
 
 client/mg/
 client/assets/data.xml
+client/assets/data.json
 
 server_python/mg/
 server_python/data.xml
+server_python/data.json
 
 server_php/mg/
 server_php/data.xml
+server_php/data.json
 
 server_cpp/bin/
 server_cpp/server.cpp.osx.xcodeproj/
 server_cpp/build/
 server_cpp/mg/
 server_cpp/data.xml
+server_cpp/data.json

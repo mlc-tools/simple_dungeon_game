@@ -102,7 +102,7 @@ if __name__ == '__main__':
     Controller.SERVER_URL = 'http://127.0.0.1:8045/?request={}'
 
     engine = Engine()
-    DataStorage.shared().initialize(open('assets/data.xml').read())
+    DataStorage.shared().initialize(open('assets/data.json').read())
 
     scene = GameScene()
     engine.set_scene(scene)

@@ -1,3 +1,3 @@
 [submodule "mlc"]
 	path = mlc
-	url = git@bitbucket.org:VolodarDev/tools-mlc.git
+url=git@github.com:mlc-tools/mlc-tools.git

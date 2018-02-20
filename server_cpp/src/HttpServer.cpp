@@ -130,8 +130,8 @@ void HttpServer::_callback(evhttp_request* req, void* arg)
             throw Exception("not GET request");
         }
         std::string uri = evhttp_request_get_uri(req);
-		log("Got a GET request: \n%s", uri.c_str());
-        
+//		log("Got a GET request: \n%s", uri.c_str());
+		
         struct evkeyvalq headers;
         evhttp_parse_query_str(evhttp_request_get_uri (req), &headers);
         auto begin = headers.tqh_first;
