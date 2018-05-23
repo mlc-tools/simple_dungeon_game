@@ -10,7 +10,6 @@ set(ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(
 	${ROOT}/
 	${ROOT}/src/
-	${ROOT}/src/ml/
 	${ROOT}/mg/
 	${ROOT}/external/
 )

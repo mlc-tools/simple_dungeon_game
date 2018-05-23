@@ -2,9 +2,10 @@ from BaseHTTPServer import HTTPServer
 from BaseHTTPServer import BaseHTTPRequestHandler
 from urlparse import parse_qs
 
+
 class HttpServer(BaseHTTPRequestHandler):
     request_handler_class = None
-    
+
     @staticmethod
     def start(port, request_handler_class):
         HttpServer.request_handler_class = request_handler_class
@@ -26,6 +27,6 @@ class HttpServer(BaseHTTPRequestHandler):
         except Exception as inst:
             self.wfile.write("error({})".format(inst.message))
             print "error({})".format(inst.message)
-            
+
     def send(self, message):
         self.wfile.write(message)
