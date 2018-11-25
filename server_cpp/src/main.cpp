@@ -5,8 +5,8 @@
 #include "utils.h"
 #include "mg/DataStorage.h"
 #include "mg/Request.h"
-#include "mg/Factory.h"
-#include "mg/config.h"
+#include "mg/mg_Factory.h"
+#include "mg/mg_config.h"
 #include "pugixml/pugixml.hpp"
 #include "jsoncpp/json.h"
 #include <sstream>

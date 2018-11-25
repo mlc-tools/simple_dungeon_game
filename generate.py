@@ -18,7 +18,7 @@ def generate():
     generator.generate_data('./configs/data_%s' % protocol, './server_php')
 
     # Server C++
-    generator.generate('cpp', protocol, './server_cpp/mg', side='server', generate_intrusive='yes')
+    generator.generate('cpp', protocol, './server_cpp/mg', side='server', generate_intrusive='yes', generate_factory='yes')
     generator.generate_data('./configs/data_%s' % protocol, './server_cpp')
 
 

@@ -12,14 +12,12 @@ class RequestHandler:
         self.server = server
 
     def handle(self, payload):
-        global MG_SERIALIZE_FORMAT
-        global MG_XML
-
         request = Factory.create_command(payload)
         response = request.execute()
 
         sbuffer = Factory.serialize_command(response)
         self.server.send(sbuffer)
+
 
 if __name__ == '__main__':
     global MG_SERIALIZE_FORMAT
