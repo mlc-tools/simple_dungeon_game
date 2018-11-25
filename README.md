@@ -9,6 +9,8 @@ which communicates with the servers on Python or PHP or C++.
 
 All servers use one code of game logic that is translated into the server language
 
+### Install mlc-tools by pip: ###
+ - ```pip install mlc_tools --user```
 
 ### How to Launch The Game with C++ Server: ###
 
