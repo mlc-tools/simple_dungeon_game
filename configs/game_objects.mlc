@@ -5,7 +5,7 @@ class DataGameObject<SerializedObject>:storage
     bool interaction = false
     DataGameObject*:link next
 
-    string image:client = ""
+    string image
 }
 
 enum TileState

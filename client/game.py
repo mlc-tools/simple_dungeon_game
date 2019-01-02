@@ -4,7 +4,7 @@ from mg.DataStorage import DataStorage
 from mg.TileState import TileState
 from mg.RequestOpenTile import RequestOpenTile
 from mg.RequestRewardFromTile import RequestRewardFromTile
-from mg.config import *
+from mg import Config
 
 
 class GameTile(Sprite):
@@ -96,20 +96,18 @@ class GameScene(Scene):
 
 
 if __name__ == '__main__':
-    global MG_SERIALIZE_FORMAT
-    global MG_XML
-
     # Uncomment this line to run game with php server
     Controller.SERVER_URL = 'http://localhost/?request={}'
 
     # Uncomment this line to run game with python http server
     # Controller.SERVER_URL = 'http://localhost:8045/?request={}'
 
-    data_file = 'data.xml' if MG_SERIALIZE_FORMAT == MG_XML else 'data.json'
+    if Config.SUPPORT_XML_PROTOCOL:
+        DataStorage.shared().initialize_xml(open('assets/data.xml').read())
+    else:
+        DataStorage.shared().initialize_json(open('assets/data.json').read())
 
     engine = Engine()
-    DataStorage.shared().initialize(open('assets/' + data_file).read())
-
     scene = GameScene()
     engine.set_scene(scene)
     engine.loop()

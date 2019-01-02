@@ -41,7 +41,6 @@ class Engine:
             pygame.display.flip()
             ms = self.clock.tick(self.fps)
             if self.next_scene is not None:
-                print 'switch_scene'
                 self.scene = self.next_scene
                 self.next_scene = None
             if self.scene is not None:

@@ -6,15 +6,15 @@
 #include "mg/DataStorage.h"
 #include "mg/Request.h"
 #include "mg/mg_Factory.h"
-#include "mg/mg_config.h"
+#include "mg/config.h"
 #include "pugixml/pugixml.hpp"
 #include "jsoncpp/json.h"
 #include <sstream>
 
 
-#if MG_SERIALIZE_FORMAT == MG_JSON
+#if SUPPORT_JSON_PROTOCOL
 std::string kDataFileName("data.json");
-#else
+#elif SUPPORT_XML_PROTOCOL
 std::string kDataFileName("data.xml");
 #endif
 
@@ -24,13 +24,19 @@ std::string handler(const std::map<std::string, std::string>& get)
 	if (get.count("/?request") == 0)
 		return "error: cannot parse request";
 	auto payload = get.at("/?request");
-	
+
 	log("\n Request: %s", payload.c_str());
-	
-	auto request = mg::Factory::create_command<mg::Request>(payload);
+
+#if SUPPORT_JSON_PROTOCOL
+	auto request = mg::Factory::create_command_from_json<mg::Request>(payload);
 	auto response = request->execute();
-	auto buffer = mg::Factory::serialize_command(response);
-	
+	auto buffer = mg::Factory::serialize_command_to_json(response);
+#elif SUPPORT_XML_PROTOCOL
+	auto request = mg::Factory::create_command_from_xml<mg::Request>(payload);
+	auto response = request->execute();
+	auto buffer = mg::Factory::serialize_command_to_xml(response);
+#endif
+
 	log("Response: %s", buffer.c_str());
 
 	return buffer;
@@ -49,7 +55,11 @@ int main(int argc, char **argv)
 		log("current path to data: %s", (root + kDataFileName).c_str());
 		exit(1);
 	}
-	mg::DataStorage::shared().initialize(buffer);
+#if SUPPORT_JSON_PROTOCOL
+	mg::DataStorage::shared().initialize_json(buffer);
+#elif SUPPORT_XML_PROTOCOL
+	mg::DataStorage::shared().initialize_xml(buffer);
+#endif
 
 	std::string ip("127.0.0.1");
     HttpServer server(ip, 8045);
@@ -60,6 +70,6 @@ int main(int argc, char **argv)
 	{
 		sleep(10);
 	}
-	
+
     return 0;
 }

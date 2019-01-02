@@ -2,7 +2,7 @@ from http_server import HttpServer
 
 from mg.DataStorage import DataStorage
 from mg.Factory import Factory
-from mg.config import *
+from mg import Config
 
 
 class RequestHandler:
@@ -12,19 +12,24 @@ class RequestHandler:
         self.server = server
 
     def handle(self, payload):
-        request = Factory.create_command(payload)
+        if Config.SUPPORT_XML_PROTOCOL:
+            request = Factory.create_command_from_xml(payload)
+        else:
+            request = Factory.create_command_from_json(payload)
         response = request.execute()
 
-        sbuffer = Factory.serialize_command(response)
-        self.server.send(sbuffer)
+        if Config.SUPPORT_XML_PROTOCOL:
+            body = Factory.serialize_command_to_xml(response)
+        else:
+            body = Factory.serialize_command_to_json(response)
+        self.server.send(body)
 
 
 if __name__ == '__main__':
-    global MG_SERIALIZE_FORMAT
-    global MG_XML
-
-    data_file = 'data.xml' if MG_SERIALIZE_FORMAT == MG_XML else 'data.json'
+    if Config.SUPPORT_XML_PROTOCOL:
+        DataStorage.shared().initialize_xml(open('data.xml').read())
+    else:
+        DataStorage.shared().initialize_json(open('data.json').read())
 
     print 'run server:'
-    DataStorage.shared().initialize(open(data_file).read())
     HttpServer.start(port=8045, request_handler_class=RequestHandler)

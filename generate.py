@@ -1,25 +1,28 @@
-from mlc_tools import Generator
+from mlc_tools import Mlc
 
 
 def generate():
     protocol = 'xml'
-    generator = Generator(configs_directory='./configs', side='client', disable_logs='no', generate_tests='no')
+    # protocol = 'json'
+    
+    generator = Mlc(configs_directory='./configs', side='client', disable_logs=False, generate_tests=False)
 
     # Client:
-    generator.generate('py', protocol, './client/mg')
-    generator.generate_data('./configs/data_%s' % protocol, './client/assets')
+    generator.generate(language='py', formats=protocol, out_directory='./client/mg', side='client')
+    generator.generate_data(data_directory='./configs/data_%s' % protocol, out_data_directory='./client/assets')
 
     # Server Python
-    generator.generate('py', protocol, './server_python/mg', side='server')
-    generator.generate_data('./configs/data_%s' % protocol, './server_python')
+    generator.generate(language='py', formats=protocol, out_directory='./server_python/mg', side='server')
+    generator.generate_data(data_directory='./configs/data_%s' % protocol, out_data_directory='./server_python')
 
     # Server PHP
-    generator.generate('php', protocol, './server_php/mg', side='server')
-    generator.generate_data('./configs/data_%s' % protocol, './server_php')
+    generator.generate(language='php', formats=protocol, out_directory='./server_php/mg', side='server')
+    generator.generate_data(data_directory='./configs/data_%s' % protocol, out_data_directory='./server_php')
 
     # Server C++
-    generator.generate('cpp', protocol, './server_cpp/mg', side='server', generate_intrusive='yes', generate_factory='yes')
-    generator.generate_data('./configs/data_%s' % protocol, './server_cpp')
+    generator.generate(language='cpp', formats=protocol, out_directory='./server_cpp/mg', side='server',
+                       generate_intrusive=True, generate_factory=True)
+    generator.generate_data(data_directory='./configs/data_%s' % protocol, out_data_directory='./server_cpp')
 
 
 if __name__ == '__main__':

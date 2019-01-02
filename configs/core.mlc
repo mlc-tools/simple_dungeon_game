@@ -1,13 +1,13 @@
 class SerializedObject:serialized
 {
     // C++ support
-	int _reference_counter:runtime = 1
-	function int retain()
+	int:runtime _reference_counter = 1
+	function int retain():cpp
 	{
 		this->_reference_counter += 1;
 		return this->_reference_counter;
 	}
-	function int release()
+	function int release():cpp
 	{
 		this->_reference_counter -= 1;
 		auto c = this->_reference_counter;
