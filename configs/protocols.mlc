@@ -1,5 +1,5 @@
 
-class Request<SerializedObject>:visitor
+class Request:visitor
 {
     function Response* execute():server:abstract;
 }
@@ -33,7 +33,7 @@ class RequestRewardFromTile<Request>
     }
 }
 
-class Response<SerializedObject>:visitor
+class Response:visitor
 {
 }
 

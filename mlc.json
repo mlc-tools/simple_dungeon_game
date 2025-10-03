@@ -1,0 +1,47 @@
+{
+  "source": {
+    "configs": "configs",
+    "data": "configs/data_xml/"
+  },
+  "generation": [
+    {
+      "out": "client/mg/",
+      "data_out": "client/assets/",
+      "auto_registration": false,
+      "generate_intrusive": true,
+      "generate_tests": false,
+      "language": "py",
+      "side": "client",
+      "serialize_protocol": "xml",
+      "filter_code": []
+    },
+    {
+      "out": "server_python/mg",
+      "data_out": "server_python/",
+      "auto_registration": false,
+      "generate_intrusive": true,
+      "generate_tests": false,
+      "language": "py",
+      "side": "server",
+      "serialize_protocol": "xml",
+      "filter_code": []
+    },
+    {
+      "out": "server_cpp/mg",
+      "data_out": "server_cpp/",
+      "auto_registration": false,
+      "generate_intrusive": true,
+      "generate_tests": false,
+      "language": "cpp",
+      "side": "server",
+      "serialize_protocol": "xml",
+      "filter_code": []
+    }
+  ],
+  "features": {
+    "data_storage": {},
+    "visitor": {},
+    "ref_counter": {},
+    "operator_equals": {}
+  }
+}

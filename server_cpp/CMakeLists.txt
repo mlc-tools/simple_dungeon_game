@@ -1,6 +1,6 @@
-project(server_cpp)
-
 cmake_minimum_required(VERSION 3.7)
+
+project(server_cpp)
 
 set(server ${PROJECT_NAME}_server)
 
@@ -37,7 +37,7 @@ endif()
 file(GLOB_RECURSE SRC src/*.cpp src/*.h external/*cpp external/*.h external/*.hpp)
 file(GLOB_RECURSE MG mg/*.cpp mg/*.h)
 
-set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -std=c++14)
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -std=c++20)
 
 add_executable(server ${SRC} ${MG})
 target_link_libraries(server event)

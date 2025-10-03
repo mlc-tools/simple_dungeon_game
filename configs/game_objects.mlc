@@ -1,4 +1,4 @@
-class DataGameObject<SerializedObject>:storage
+class DataGameObject:storage
 {
     string name
     int reward_gold = 0
@@ -14,7 +14,7 @@ enum TileState
     open
 }
 
-class Tile<SerializedObject>
+class Tile
 {
     int x
     int y
@@ -22,7 +22,7 @@ class Tile<SerializedObject>
     DataGameObject*:link object
 }
 
-class DataLevel<SerializedObject>:storage
+class DataLevel:storage
 {
     string name
     int tile_size

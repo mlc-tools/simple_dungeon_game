@@ -1,9 +1,10 @@
-import urllib2
+from urllib import request as urllib_request
 import xml.etree.ElementTree as ET
 import json
 from mg.Factory import Factory
 from mg.IVisitorResponse import IVisitorResponse
 from mg import Config
+from mg.common import *
 
 
 class RequestManager:
@@ -15,28 +16,27 @@ class RequestManager:
     def request(self, request):
         payload = ''
         if Config.SUPPORT_XML_PROTOCOL:
-            root = ET.Element(request.get_type())
-            request.serialize_xml(root)
-            payload = ET.tostring(root)
+            payload = serialize_command_to_xml(request)
         else:
-            dict_ = {}
-            request.serialize_json(dict_)
-            dict_ = {request.get_type(): dict_}
-            payload = json.dumps(dict_)
-        print payload
+            payload = serialize_command_to_json(request)
+        print(payload)
+        if isinstance(payload, bytes):
+            payload = payload.decode()
 
         url = self.server_url.format(payload)
         url = url.replace('\n', '%20')
         url = url.replace(' ', '%20')
+        print(url)
 
-        response_message = urllib2.urlopen(url).read()
-        response_message = response_message.replace('\n', '')
+        response_message = urllib_request.urlopen(url).read()
+        # Decode bytes to string for processing
+        response_message = response_message.decode('utf-8').replace('\n', '')
 
-        print response_message
+        print(response_message)
         if Config.SUPPORT_XML_PROTOCOL:
-            response = Factory.create_command_from_xml(response_message)
+            response = create_command_from_xml(response_message)
         else:
-            response = Factory.create_command_from_json(response_message)
+            response = create_command_from_json(response_message)
         response_handler = ResponseHandler(self.controller)
         response_handler.visit(response)
 

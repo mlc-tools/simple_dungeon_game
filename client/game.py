@@ -92,15 +92,16 @@ class GameScene(Scene):
     def on_changed_gold(self):
         self.gold_node.set_text(str(self.gold))
         rect = self.gold_node.renderer.get_rect()
-        self.gold_node.pos = [320 - rect.width / 2, 30]
+        # Ensure integer positioning in Python 3
+        self.gold_node.pos = [320 - (rect.width // 2), 30]
 
 
 if __name__ == '__main__':
     # Uncomment this line to run game with php server
-    Controller.SERVER_URL = 'http://localhost/?request={}'
+    # Controller.SERVER_URL = 'http://localhost/?request={}'
 
     # Uncomment this line to run game with python http server
-    # Controller.SERVER_URL = 'http://localhost:8045/?request={}'
+    Controller.SERVER_URL = 'http://localhost:8045/?request={}'
 
     if Config.SUPPORT_XML_PROTOCOL:
         DataStorage.shared().initialize_xml(open('assets/data.xml').read())

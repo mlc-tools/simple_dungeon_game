@@ -1,6 +1,6 @@
-from BaseHTTPServer import HTTPServer
-from BaseHTTPServer import BaseHTTPRequestHandler
-from urlparse import parse_qs
+from http.server import HTTPServer
+from http.server import BaseHTTPRequestHandler
+from urllib.parse import urlsplit, parse_qs
 
 
 class HttpServer(BaseHTTPRequestHandler):
@@ -15,18 +15,25 @@ class HttpServer(BaseHTTPRequestHandler):
     def do_GET(self):
         try:
             self.send_response(200)
-            self.send_header('content-type', 'text/html')
+            self.send_header('content-type', 'text/html; charset=utf-8')
             self.end_headers()
 
-            s = self.path
-            args = parse_qs(s[2:])
-            payload = args['request'][0]
+            # Parse query string safely
+            parsed = urlsplit(self.path)
+            args = parse_qs(parsed.query)
+            payload = args.get('request', [''])[0]
+            if isinstance(payload, bytes):
+                payload = payload.decode()
             request_handler = HttpServer.request_handler_class(self)
             request_handler.handle(payload)
 
         except Exception as inst:
-            self.wfile.write("error({})".format(inst.message))
-            print "error({})".format(inst.message)
+            msg = "error({})".format(str(inst))
+            self.wfile.write(msg.encode('utf-8'))
+            print(msg)
 
     def send(self, message):
-        self.wfile.write(message)
+        if isinstance(message, bytes):
+            self.wfile.write(message)
+        else:
+            self.wfile.write(str(message).encode('utf-8'))

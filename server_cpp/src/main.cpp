@@ -7,6 +7,8 @@
 #include "mg/Request.h"
 #include "mg/mg_Factory.h"
 #include "mg/config.h"
+#include "mg/mg_extensions.h"
+#include "mg/Registrar.h"
 #include "pugixml/pugixml.hpp"
 #include "jsoncpp/json.h"
 #include <sstream>
@@ -28,13 +30,13 @@ std::string handler(const std::map<std::string, std::string>& get)
 	log("\n Request: %s", payload.c_str());
 
 #if SUPPORT_JSON_PROTOCOL
-	auto request = mg::Factory::create_command_from_json<mg::Request>(payload);
+	auto request = mg::create_command_from_json<mg::Request>(payload);
 	auto response = request->execute();
-	auto buffer = mg::Factory::serialize_command_to_json(response);
+	auto buffer = mg::serialize_command_to_json<mg::Response>(response);
 #elif SUPPORT_XML_PROTOCOL
-	auto request = mg::Factory::create_command_from_xml<mg::Request>(payload);
+	auto request = mg::create_command_from_xml<mg::Request>(payload);
 	auto response = request->execute();
-	auto buffer = mg::Factory::serialize_command_to_xml(response);
+	auto buffer = mg::serialize_command_to_xml<mg::Response>(response);
 #endif
 
 	log("Response: %s", buffer.c_str());
@@ -44,6 +46,8 @@ std::string handler(const std::map<std::string, std::string>& get)
 
 int main(int argc, char **argv)
 {
+    mg::register_classes();
+    
 	std::string root;
 	if(argc > 1)
 		root = argv[1];
