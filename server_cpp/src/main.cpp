@@ -15,9 +15,17 @@
 
 
 #if SUPPORT_JSON_PROTOCOL
+
 std::string kDataFileName("data.json");
+#define SERIALIZE mg::serialize_command_to_json
+#define DESERIALIZE mg::create_command_from_json
+
 #elif SUPPORT_XML_PROTOCOL
+
 std::string kDataFileName("data.xml");
+#define SERIALIZE mg::serialize_command_to_xml
+#define DESERIALIZE mg::create_command_from_xml
+
 #endif
 
 
@@ -27,27 +35,17 @@ std::string handler(const std::map<std::string, std::string>& get)
 		return "error: cannot parse request";
 	auto payload = get.at("/?request");
 
-	log("\n Request: %s", payload.c_str());
-
-#if SUPPORT_JSON_PROTOCOL
-	auto request = mg::create_command_from_json<mg::Request>(payload);
+	auto request = DESERIALIZE<mg::Request>(payload);
 	auto response = request->execute();
-	auto buffer = mg::serialize_command_to_json<mg::Response>(response);
-#elif SUPPORT_XML_PROTOCOL
-	auto request = mg::create_command_from_xml<mg::Request>(payload);
-	auto response = request->execute();
-	auto buffer = mg::serialize_command_to_xml<mg::Response>(response);
-#endif
+	auto buffer = SERIALIZE<mg::Response>(response);
 
 	log("Response: %s", buffer.c_str());
 
 	return buffer;
 }
 
-int main(int argc, char **argv)
+void initialize_data_storage(int argc, char **argv)
 {
-    mg::register_classes();
-    
 	std::string root;
 	if(argc > 1)
 		root = argv[1];
@@ -64,6 +62,12 @@ int main(int argc, char **argv)
 #elif SUPPORT_XML_PROTOCOL
 	mg::DataStorage::shared().initialize_xml(buffer);
 #endif
+}
+
+int main(int argc, char **argv)
+{
+    mg::register_classes();
+    initialize_data_storage();
 
 	std::string ip("127.0.0.1");
     HttpServer server(ip, 8045);
